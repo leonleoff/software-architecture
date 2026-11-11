@@ -1,0 +1,16 @@
+# Build output (see build.sh / .vscode/settings.json)
+build/
+dist/
+
+# LaTeX aux files, in case something compiles next to the .tex
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc

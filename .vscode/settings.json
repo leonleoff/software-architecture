@@ -1,0 +1,7 @@
+{
+  // Compile on every save; aux files and the PDF go to <exercise>/build/,
+  // the same place build.sh uses.
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.latex.outDir": "%DIR%/build",
+  "latex-workshop.view.pdf.viewer": "tab"
+}

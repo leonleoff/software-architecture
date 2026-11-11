@@ -1,0 +1,84 @@
+% PIBA Template -- Software Architecture Lab, WS 2026/27, University of Stuttgart
+%
+% Self-contained: compile with pdflatex (no additional files needed).
+% Rules: the whole PIBA must fit on ONE page. Do not change font size or margins.
+% Replace all text in \todo{...} and remove the hints before submitting.
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+\setlist{itemsep=0.1em, topsep=0.2em}
+
+% Placeholder marker; leave the definition, but remove all uses before submitting.
+\newcommand{\todo}[1]{\textcolor{gray}{[#1]}}
+
+% Part heading
+\newcommand{\pibapart}[1]{\vspace{0.4em}{\large\textbf{#1}}\par}
+
+% ---------------------------------------------------------------------------
+% Project information
+% ---------------------------------------------------------------------------
+\newcommand{\projecttitle}{\todo{Project Title}}
+\newcommand{\teamname}{\todo{Team name}}
+\newcommand{\teammembers}{\todo{Name 1, Name 2, Name 3, Name 4}}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\textbf{\projecttitle}}\\[0.4em]
+  {\large PIBA -- Software Architecture Lab, WS 2026/27}\\[0.3em]
+  \teamname\ \textbullet\ \teammembers
+\end{center}
+
+% ---------------------------------------------------------------------------
+\pibapart{Problem}
+% What is wrong, missing, or hard today, and for whom?
+% Describe the situation today, not your solution. Name the system, the users,
+% and the concrete pain. Quantify where possible.
+\todo{Who is affected, and in which context? What exactly goes wrong or is
+missing? Why do existing solutions not solve it sufficiently?}
+
+% ---------------------------------------------------------------------------
+\pibapart{Idea}
+% What is your proposed solution, and what does its architecture look like?
+% The architecture is the heart of your idea.
+\todo{Main components and their interaction. Architectural style or patterns
+and why. Driving quality attributes. Out of scope: \ldots}
+
+% ---------------------------------------------------------------------------
+\pibapart{Benefits}
+% What improves if the idea works, and how would you show it?
+% Link each benefit back to the problem.
+\begin{itemize}
+  \item \todo{Benefit 1 -- addresses \ldots; demonstrated by \ldots}
+  \item \todo{Benefit 2 -- addresses \ldots; demonstrated by \ldots}
+\end{itemize}
+
+% ---------------------------------------------------------------------------
+\pibapart{Action}
+% What will you build and evaluate, in which steps, within 3 months?
+% Mark the minimum deliverable and keep some buffer.
+\begin{enumerate}
+  \item ...
+  \item ...
+\end{enumerate}
+\todo{Required technologies, data, and infrastructure; team split.}
+
+% ---------------------------------------------------------------------------
+\vfill
+{\small\textbf{AI usage statement.} \todo{Which AI tools and models did you
+use, and for what (e.g.\ brainstorming, rephrasing)? Write ``None'' if you
+did not use AI.}}
+
+\end{document}

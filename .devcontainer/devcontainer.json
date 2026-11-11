@@ -1,0 +1,12 @@
+{
+  "name": "LaTeX (TeX Live)",
+  // Full TeX Live on Debian (~3 GB download, once). The CI pipeline uses the
+  // same image, so whatever compiles here also compiles on GitHub.
+  "image": "texlive/texlive:latest",
+  "customizations": {
+    "vscode": {
+      // Build/preview settings live in .vscode/settings.json.
+      "extensions": ["James-Yu.latex-workshop"]
+    }
+  }
+}
