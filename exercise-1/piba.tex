@@ -29,9 +29,9 @@
 % ---------------------------------------------------------------------------
 % Project information
 % ---------------------------------------------------------------------------
-\newcommand{\projecttitle}{\todo{Project Title}}
-\newcommand{\teamname}{\todo{Team name}}
-\newcommand{\teammembers}{\todo{Name 1, Name 2, Name 3, Name 4}}
+\newcommand{\projecttitle}{Dance Teacher}
+\newcommand{\teamname}{Vienna}
+\newcommand{\teammembers}{Aylina Ashkenov, Leon Layer, Stevan Paunovic, Nils Kwiatkowski, Sohan Amarapilli, Tobias Kostorz}
 
 \begin{document}
 
@@ -46,23 +46,38 @@
 % What is wrong, missing, or hard today, and for whom?
 % Describe the situation today, not your solution. Name the system, the users,
 % and the concrete pain. Quantify where possible.
-\todo{Who is affected, and in which context? What exactly goes wrong or is
-missing? Why do existing solutions not solve it sufficiently?}
+Learning to dance without professional guidance can be challenging. Learners
+practising dance routines with only reference videos must identify movement and
+timing errors themselves. Video playback alone does not provide individual
+corrections. A camera-based assistant can distinguish actual deviations from
+unreliable tracking and deliver feedback before it becomes outdated. Our target
+setting is individual practice of short routines with a fixed camera and the
+learner's full body visible.
 
 % ---------------------------------------------------------------------------
 \pibapart{Idea}
 % What is your proposed solution, and what does its architecture look like?
 % The architecture is the heart of your idea.
-\todo{Main components and their interaction. Architectural style or patterns
-and why. Driving quality attributes. Out of scope: \ldots}
+Dance Teacher overlays a skeleton on the learner's camera image, compares joint
+relationships with reference videos that the user can upload, and provides
+feedback. Key moments from the reference video are used to match the user's
+poses. Movement similarities are displayed. Possibly, there could be an
+additional solution for separate timing feedback that distinguishes late
+movements from incorrect poses. The architecture could look like this:
+\todo{architecture diagram}
+
+Out of scope are model training, partner dancing, multiple cameras and detailed
+evaluation of dance technique.
 
 % ---------------------------------------------------------------------------
 \pibapart{Benefits}
 % What improves if the idea works, and how would you show it?
 % Link each benefit back to the problem.
 \begin{itemize}
-  \item \todo{Benefit 1 -- addresses \ldots; demonstrated by \ldots}
-  \item \todo{Benefit 2 -- addresses \ldots; demonstrated by \ldots}
+  \item \textbf{Improvement:} Better dance moves and the possibility to teach
+  yourself with actionable feedback -- supports self-correction.\\
+  \textbf{Shown by:} a field study comparing learning a dance from a video with
+  vs.\ without the application.
 \end{itemize}
 
 % ---------------------------------------------------------------------------
@@ -70,15 +85,24 @@ and why. Driving quality attributes. Out of scope: \ldots}
 % What will you build and evaluate, in which steps, within 3 months?
 % Mark the minimum deliverable and keep some buffer.
 \begin{enumerate}
-  \item ...
-  \item ...
+  \item Nov 2026 -- Requirements specification + domain model
+  \item Dec 2026 -- Architecture
+  \item Jan 2027 -- Prototype
+  \item \textbf{Minimum deliverable (January):} an application for real-time
+  pose comparison between the reference poses and the learner's poses in
+  chronological order.
+  \todo{Rewrite and simplify. The concept: at the start, a simple prototype
+  based on doing the poses in chronological order.}
 \end{enumerate}
-\todo{Required technologies, data, and infrastructure; team split.}
+\textbf{Required technologies, data, and infrastructure:} a laptop with a
+webcam, an existing pose-estimation (skeleton recognition) library, and
+available reference videos.\\
+\textbf{Team split:} dynamic split between the members Tobias, Leon, Aylina,
+Nils, Sohan and Stevan.
 
 % ---------------------------------------------------------------------------
 \vfill
-{\small\textbf{AI usage statement.} \todo{Which AI tools and models did you
-use, and for what (e.g.\ brainstorming, rephrasing)? Write ``None'' if you
-did not use AI.}}
+{\small\textbf{AI usage statement.} ChatGPT and Claude were used for
+brainstorming and rephrasing the project description.}
 
 \end{document}
