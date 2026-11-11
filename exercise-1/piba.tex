@@ -58,22 +58,24 @@ learner's full body visible.
 \pibapart{Idea}
 % What is your proposed solution, and what does its architecture look like?
 % The architecture is the heart of your idea.
-Dance Teacher overlays a skeleton on the learner's camera image, compares joint
-relationships with reference videos that the user can upload, and provides
+Dance Teacher overlays a skeleton on the learner's camera image. It compares
+the learner's poses with a reference video that the user can upload and gives
 feedback. Movement similarities are displayed. Everything runs locally on one
-laptop, so camera images never leave the machine.
+laptop.
 
-Two pipelines share one Pose Estimator and meet only at a pose sequence file.
-The reference pipeline runs once per video and marks key poses. The practice
-loop runs for every camera frame and compares the learner's normalized pose with
-the current target pose. Teaching methods are interchangeable learning
-strategies (Strategy pattern). The first one is Pose by Pose; later
-ones, e.g.\ Dance Along, which separates ``too late'' from ``wrong pose'', can
-be added without changing other components.
+The system has two pipelines that use the same pose estimation and only share a
+file with the reference poses, so each can be changed on its own. The reference
+pipeline runs once per video and marks key poses. The practice loop runs for
+every camera frame and compares the learner's normalized pose with the key pose
+the learner is currently practising. Teaching methods are interchangeable
+learning strategies (Strategy pattern). The first one is Pose by Pose; more can
+be added later without changing other components.
 
-Architectural styles: Pipes and Filters for the real-time loop; Ports and
-Adapters for the pose library and the camera. Driving quality
-attributes: responsiveness, robustness, modifiability and privacy.
+The practice loop is a chain of steps, each passing its result to the next
+(Pipes and Filters). The pose library and the camera sit behind our own
+interfaces, so we can replace them (Ports and Adapters). Key quality
+attributes: fast feedback, robustness against tracking errors and easy
+extension.
 
 Out of scope are model training, partner dancing, multiple cameras and detailed
 evaluation of dance technique.
@@ -88,8 +90,8 @@ evaluation of dance technique.
   \textbf{Shown by:} a field study comparing learning a dance from a video with
   vs.\ without the application.
   \item \textbf{Improvement:} Feedback the learner can trust -- tracking noise
-  should not lead to false corrections, and feedback should arrive while the
-  learner still holds the pose. \textbf{Shown by:} tests with recorded videos.
+  should not lead to false corrections, and feedback should arrive in time.
+  \textbf{Shown by:} tests with recorded videos.
 \end{itemize}
 
 % ---------------------------------------------------------------------------
@@ -103,17 +105,17 @@ evaluation of dance technique.
   with one learning strategy, Pose by Pose: the learner takes the key poses of
   the reference video one after another, and the next pose only appears once
   the current one is matched.
-  \item Feb 2027 -- Evaluation and presentation; if time allows, a second learning strategy.
+  \item Feb 2027 -- Evaluation and presentation; if time allows, more learning strategies.
 \end{enumerate}
 \textbf{Required technologies, data, and infrastructure:} a laptop with a
-webcam, a pretrained pose-estimation library (e.g.\ MediaPipe Pose or
-MoveNet), and reference videos with a single dancer.\\
+webcam, a pretrained pose-estimation library, and reference videos with a
+single dancer.\\
 \textbf{Team split:} dynamic split between the members Tobias, Leon, Aylina,
 Nils, Sohan and Stevan.
 
 % ---------------------------------------------------------------------------
 \vfill
 {\small\textbf{AI usage statement.} ChatGPT and Claude were used for
-brainstorming and rephrasing the project description.}
+brainstorming, rephrasing and improving the text of the project description.}
 
 \end{document}

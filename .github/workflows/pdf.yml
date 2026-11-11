@@ -1,21 +1,27 @@
 name: Build PDFs
 
 # Every push compiles all exercise-*/ documents (same TeX Live image as the
-# dev container). Pushes to main also replace the rolling "latest" release,
-# so the current PDFs are always at Releases -> latest; nothing is committed
-# back to the repo. Other branches get the PDFs as a workflow artifact.
+# dev container) and publishes them as a GitHub release; nothing is committed
+# back to the repo.
+#   main           -> release "latest", marked as Latest
+#   any other branch -> pre-release "branch-<name>", PDFs named *-<name>.pdf
+# Each push replaces its branch's release, and deleting a branch deletes its
+# release, so there is never more than one release per existing branch.
 
 on:
   push:
+    branches: ["**"]
     paths-ignore: ["**.md"]
+  delete:
   workflow_dispatch:
 
 concurrency:
-  group: pdf-${{ github.ref }}
+  group: pdf-${{ github.event_name == 'delete' && github.event.ref || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
   build:
+    if: github.event_name != 'delete'
     runs-on: ubuntu-latest
     container: texlive/texlive:latest
     steps:
@@ -27,10 +33,10 @@ jobs:
           name: pdfs
           path: dist/*.pdf
           if-no-files-found: error
+          retention-days: 1 # only hands the PDFs to the release job
 
   release:
     needs: build
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -39,13 +45,42 @@ jobs:
         with:
           name: pdfs
           path: dist
-      - name: Replace the "latest" release
+      - name: Replace this branch's release
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
         run: |
-          gh release delete latest --yes --cleanup-tag || true
-          gh release create latest dist/*.pdf \
-            --target "$GITHUB_SHA" \
-            --title "Latest PDFs" \
-            --notes "Built from ${GITHUB_SHA::7} on $(date -u '+%Y-%m-%d %H:%M UTC')."
+          sha=${GITHUB_SHA::7}
+          if [ "$BRANCH" = main ]; then
+            tag=latest
+            title="Latest PDFs (main)"
+            notes="Built from $sha on main. Replaced on every push."
+            flags="--latest"
+          else
+            slug=$(printf '%s' "$BRANCH" | tr -c 'A-Za-z0-9._-' '-')
+            tag="branch-$slug"
+            title="PDFs from branch $BRANCH"
+            notes="Built from $sha on branch $BRANCH. Replaced on every push, deleted together with the branch."
+            flags="--prerelease --latest=false"
+            for f in dist/*.pdf; do mv "$f" "${f%.pdf}-$slug.pdf"; done
+          fi
+          gh release delete "$tag" --yes --cleanup-tag || true
+          gh release create "$tag" dist/*.pdf $flags \
+            --target "$GITHUB_SHA" --title "$title" --notes "$notes"
+
+  cleanup:
+    # Runs from the workflow on the default branch (GitHub's rule for delete events).
+    if: github.event_name == 'delete' && github.event.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Delete the release of the deleted branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          BRANCH: ${{ github.event.ref }}
+        run: |
+          slug=$(printf '%s' "$BRANCH" | tr -c 'A-Za-z0-9._-' '-')
+          gh release delete "branch-$slug" --yes --cleanup-tag || true
