@@ -60,11 +60,20 @@ learner's full body visible.
 % The architecture is the heart of your idea.
 Dance Teacher overlays a skeleton on the learner's camera image, compares joint
 relationships with reference videos that the user can upload, and provides
-feedback. Key moments from the reference video are used to match the user's
-poses. Movement similarities are displayed. Possibly, there could be an
-additional solution for separate timing feedback that distinguishes late
-movements from incorrect poses. The architecture could look like this:
-\todo{architecture diagram}
+feedback. Movement similarities are displayed. Everything runs locally on one
+laptop, so camera images never leave the machine.
+
+Two pipelines share one Pose Estimator and meet only at a pose sequence file.
+The reference pipeline runs once per video and marks key poses. The practice
+loop runs for every camera frame and compares the learner's normalized pose with
+the current target pose. Teaching methods are interchangeable learning
+strategies (Strategy pattern). The first one is Pose by Pose; later
+ones, e.g.\ Dance Along, which separates ``too late'' from ``wrong pose'', can
+be added without changing other components.
+
+Architectural styles: Pipes and Filters for the real-time loop; Ports and
+Adapters for the pose library and the camera. Driving quality
+attributes: responsiveness, robustness, modifiability and privacy.
 
 Out of scope are model training, partner dancing, multiple cameras and detailed
 evaluation of dance technique.
@@ -75,9 +84,12 @@ evaluation of dance technique.
 % Link each benefit back to the problem.
 \begin{itemize}
   \item \textbf{Improvement:} Better dance moves and the possibility to teach
-  yourself with actionable feedback -- supports self-correction.\\
+  yourself with actionable feedback -- supports self-correction.
   \textbf{Shown by:} a field study comparing learning a dance from a video with
   vs.\ without the application.
+  \item \textbf{Improvement:} Feedback the learner can trust -- tracking noise
+  should not lead to false corrections, and feedback should arrive while the
+  learner still holds the pose. \textbf{Shown by:} tests with recorded videos.
 \end{itemize}
 
 % ---------------------------------------------------------------------------
@@ -86,17 +98,16 @@ evaluation of dance technique.
 % Mark the minimum deliverable and keep some buffer.
 \begin{enumerate}
   \item Nov 2026 -- Requirements specification + domain model
-  \item Dec 2026 -- Architecture
-  \item Jan 2027 -- Prototype
-  \item \textbf{Minimum deliverable (January):} an application for real-time
-  pose comparison between the reference poses and the learner's poses in
-  chronological order.
-  \todo{Rewrite and simplify. The concept: at the start, a simple prototype
-  based on doing the poses in chronological order.}
+  \item Dec 2026 -- Architecture; first tests with the pose-estimation library
+  \item Jan 2027 -- \textbf{Minimum deliverable:} a first end-to-end prototype
+  with one learning strategy, Pose by Pose: the learner takes the key poses of
+  the reference video one after another, and the next pose only appears once
+  the current one is matched.
+  \item Feb 2027 -- Evaluation and presentation; if time allows, a second learning strategy.
 \end{enumerate}
 \textbf{Required technologies, data, and infrastructure:} a laptop with a
-webcam, an existing pose-estimation (skeleton recognition) library, and
-available reference videos.\\
+webcam, a pretrained pose-estimation library (e.g.\ MediaPipe Pose or
+MoveNet), and reference videos with a single dancer.\\
 \textbf{Team split:} dynamic split between the members Tobias, Leon, Aylina,
 Nils, Sohan and Stevan.
 
