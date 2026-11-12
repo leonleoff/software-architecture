@@ -58,13 +58,24 @@ learner's full body visible.
 \pibapart{Idea}
 % What is your proposed solution, and what does its architecture look like?
 % The architecture is the heart of your idea.
-Dance Teacher overlays a skeleton on the learner's camera image, compares joint
-relationships with reference videos that the user can upload, and provides
-feedback. Key moments from the reference video are used to match the user's
-poses. Movement similarities are displayed. Possibly, there could be an
-additional solution for separate timing feedback that distinguishes late
-movements from incorrect poses. The architecture could look like this:
-\todo{architecture diagram}
+Dance Teacher overlays a skeleton on the learner's camera image. It compares
+the learner's poses with a reference video that the user can upload and gives
+feedback. Movement similarities are displayed. Everything runs locally on one
+laptop.
+
+The system has two pipelines that use the same pose estimation and only share a
+file with the reference poses, so each can be changed on its own. The reference
+pipeline runs once per video and marks key poses. The practice loop runs for
+every camera frame and compares the learner's normalized pose with the key pose
+the learner is currently practising. Teaching methods are interchangeable
+learning strategies (Strategy pattern). The first one is Pose by Pose; more can
+be added later without changing other components.
+
+The practice loop is a chain of steps, each passing its result to the next
+(Pipes and Filters). The pose library and the camera sit behind our own
+interfaces, so we can replace them (Ports and Adapters). Key quality
+attributes: fast feedback, robustness against tracking errors and easy
+extension.
 
 Out of scope are model training, partner dancing, multiple cameras and detailed
 evaluation of dance technique.
@@ -75,9 +86,12 @@ evaluation of dance technique.
 % Link each benefit back to the problem.
 \begin{itemize}
   \item \textbf{Improvement:} Better dance moves and the possibility to teach
-  yourself with actionable feedback -- supports self-correction.\\
+  yourself with actionable feedback -- supports self-correction.
   \textbf{Shown by:} a field study comparing learning a dance from a video with
   vs.\ without the application.
+  \item \textbf{Improvement:} Feedback the learner can trust -- tracking noise
+  should not lead to false corrections, and feedback should arrive in time.
+  \textbf{Shown by:} tests with recorded videos.
 \end{itemize}
 
 % ---------------------------------------------------------------------------
@@ -86,23 +100,22 @@ evaluation of dance technique.
 % Mark the minimum deliverable and keep some buffer.
 \begin{enumerate}
   \item Nov 2026 -- Requirements specification + domain model
-  \item Dec 2026 -- Architecture
-  \item Jan 2027 -- Prototype
-  \item \textbf{Minimum deliverable (January):} an application for real-time
-  pose comparison between the reference poses and the learner's poses in
-  chronological order.
-  \todo{Rewrite and simplify. The concept: at the start, a simple prototype
-  based on doing the poses in chronological order.}
+  \item Dec 2026 -- Architecture; first tests with the pose-estimation library
+  \item Jan 2027 -- \textbf{Minimum deliverable:} a first end-to-end prototype
+  with one learning strategy, Pose by Pose: the learner takes the key poses of
+  the reference video one after another, and the next pose only appears once
+  the current one is matched.
+  \item Feb 2027 -- Evaluation and presentation; if time allows, more learning strategies.
 \end{enumerate}
 \textbf{Required technologies, data, and infrastructure:} a laptop with a
-webcam, an existing pose-estimation (skeleton recognition) library, and
-available reference videos.\\
+webcam, a pretrained pose-estimation library, and reference videos with a
+single dancer.\\
 \textbf{Team split:} dynamic split between the members Tobias, Leon, Aylina,
 Nils, Sohan and Stevan.
 
 % ---------------------------------------------------------------------------
 \vfill
 {\small\textbf{AI usage statement.} ChatGPT and Claude were used for
-brainstorming and rephrasing the project description.}
+brainstorming, rephrasing and improving the text of the project description.}
 
 \end{document}
